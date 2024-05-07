@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "workspaces": [
+    "strapi-app",
+    "astro-app"
+  ],
+  "scripts": {
+    "dev": "yarn workspace strapi-app develop & yarn workspace astro-app dev"
+  }
+}
