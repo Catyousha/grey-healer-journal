@@ -1,5 +1,5 @@
 ---
-import Journals from "./test";
+import Journals from "./journal-grid";
 
 
 ---
@@ -13,7 +13,7 @@ import Journals from "./test";
 		<title>Grey Healer Journal</title>
 	</head>
 	<body>
-		<h1 class="text-lg font-bold">Welcome to Grey Healer Journal</h1>
+		<h1 class="text-lg font-bold">Grey Healer Journal</h1>
 		<Journals url={import.meta.env.STRAPI_API} client:load/>
 	</body>
 </html>
