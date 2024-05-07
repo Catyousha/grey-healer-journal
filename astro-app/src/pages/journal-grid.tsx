@@ -5,7 +5,7 @@ export default function Journals(props: { url: string }) {
   const [res, setRes] = useState<JournalsResponse>();
 
   useEffect(() => {
-    fetch(props.url + "/journals")
+    fetch(props.url + "/journals?sort[0]=createdAt:asc")
       .then((res) => {
         return res.json();
       })
@@ -15,9 +15,9 @@ export default function Journals(props: { url: string }) {
   }, []);
 
   return (
-    <section className="md:columns-2 lg:columns-3 gap-5 p-5">
+    <section className="md:columns-2 lg:columns-3 gap-5 p-5 align-middle ">
       {res?.data.map((e) => (
-        <article className="break-inside-avoid mt-5 p-5 border-zinc-200 border-2 rounded shadow-lg">
+        <article className="first:m-0 break-inside-avoid mt-5 p-5 border-zinc-200 border-2 rounded shadow-lg">
           <h2 className="text-lg font-semibold font-mono">
             {e.attributes.title}
           </h2>
