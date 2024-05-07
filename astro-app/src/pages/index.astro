@@ -1,5 +1,5 @@
 ---
-import TestIndex from "./test";
+import Journals from "./test";
 
 
 ---
@@ -10,10 +10,10 @@ import TestIndex from "./test";
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
+		<title>Grey Healer Journal</title>
 	</head>
 	<body>
-		<h1>Astro</h1>
-		<TestIndex client:load/>
+		<h1 class="text-lg font-bold">Welcome to Grey Healer Journal</h1>
+		<Journals url={import.meta.env.STRAPI_API} client:load/>
 	</body>
 </html>

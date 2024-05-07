@@ -1,20 +1,21 @@
 {
   "kind": "collectionType",
-  "collectionName": "restaurants",
+  "collectionName": "journals",
   "info": {
-    "singularName": "restaurant",
-    "pluralName": "restaurants",
-    "displayName": "Restaurant"
+    "singularName": "journal",
+    "pluralName": "journals",
+    "displayName": "Journal",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {
-    "Name": {
+    "title": {
       "type": "string"
     },
-    "Description": {
+    "content": {
       "type": "blocks"
     }
   }
