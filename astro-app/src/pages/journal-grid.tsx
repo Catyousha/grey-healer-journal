@@ -1,5 +1,9 @@
-import { BlocksRenderer, type BlocksContent } from "@strapi/blocks-react-renderer";
+import {
+  BlocksRenderer,
+  type BlocksContent,
+} from "@strapi/blocks-react-renderer";
 import { useEffect, useState } from "react";
+import * as i18next from "i18next";
 
 export default function Journals(props: { url: string }) {
   const [res, setRes] = useState<JournalsResponse>();
@@ -16,6 +20,8 @@ export default function Journals(props: { url: string }) {
 
   return (
     <section className="md:columns-2 lg:columns-3 gap-5 p-5 align-middle ">
+      <h1>{i18next.t('home.article-list', {total: res?.data.length ?? 0})}</h1>
+      
       {res?.data.map((e) => (
         <article className="first:m-0 break-inside-avoid mt-5 p-5 border-zinc-200 border-2 rounded shadow-lg">
           <h2 className="text-lg font-semibold font-mono">
