@@ -1,26 +1,154 @@
 ---
-import i18next, { t, changeLanguage } from "i18next";
-import { HeadHrefLangs } from "astro-i18next/components";
-import Journals from "./journal-grid";
+import type { HomeType } from "../types/home";
+import HeroSlider from "../components/section/hero-slider";
+import { Button } from "../components/button";
+import ArticleTabs from "../components/section/article-tabs";
+import { Image } from "astro:assets";
+import type { PartnerListType } from "../types/entities/partner";
+import type { ButtonType } from "../types/common/button";
+import type { NewsListType } from "../types/entities/news";
+import type { PressReleaseListType } from "../types/entities/press-release";
+import type { AnnualReportListType } from "../types/entities/annual-report";
+import BaseLayout from "../layouts/base-layout.astro";
 
-changeLanguage("en");
+const home = await fetch(
+    import.meta.env.STRAPI_BASE_URL +
+      "/api/home?populate[hero][populate]=*\
+      &populate[aboutUs][populate]=*\
+      &populate[pillars][populate]=*\
+      &populate[partnerConfig][populate]=*\
+      &populate[articleConfig][populate]=*\
+      &populate[contactUs][populate]=*\
+      "
+  ).then(async (e) => (await e.json() as HomeType).data.attributes);
+
+const partnerPromise = fetch(
+    import.meta.env.STRAPI_BASE_URL +
+      "/api/partners?populate=*&pagination[pageSize]=" +
+        home.partnerConfig.amount
+  ).then(async (e) => await e.json() as PartnerListType);
+
+const newsPromise = fetch(
+    import.meta.env.STRAPI_BASE_URL +
+      "/api/news-articles?populate[author]=*\
+    &populate[image]=*&pagination[pageSize]=" +
+        home.articleConfig.newsAmount
+  ).then(async (e) => await e.json() as NewsListType);
+
+  const pressPromise = fetch(
+    import.meta.env.STRAPI_BASE_URL +
+      "/api/press-releases?populate[author]=*\
+    &populate[image]=*&pagination[pageSize]=" +
+        home.articleConfig.pressReleaseAmount
+  ).then(async (e) => await e.json() as PressReleaseListType);
+
+const annualPromise = fetch(
+    import.meta.env.STRAPI_BASE_URL +
+      "/api/annual-reports?populate[author]=*\
+    &populate[image]=*&pagination[pageSize]=" +
+        home.articleConfig.annualReportAmount
+  ).then(async (e) => await e.json() as AnnualReportListType);
+
+const res = await Promise.all([partnerPromise, newsPromise, pressPromise, annualPromise]).then((e) => e);
+const partners = res[0];
+const news = res[1];
+const press = res[2];
+const annual = res[3];
 ---
+<BaseLayout title="Grey Healer Journal">
+	<main slot="main">
+		<section>
+			<HeroSlider
+				hero={home.hero}
+				baseUrl={import.meta.env.STRAPI_BASE_URL}
+				client:load />
+		</section>
+	
+		<hr class="my-5" />
+	
+		<section class="flex flex-col items-center gap-6 p-5">
+			<h1 class="text-xl font-bold">{home.aboutUs?.title}</h1>
+			<p class="w-3/5 text-center">{home.aboutUs?.description}</p>
+			<Button params={home.aboutUs?.button} className="w-1/5" />
+		</section>
+	
+		<hr class="my-5" />
+	
+		<section class="flex flex-col gap-6 p-5" id="pillars">
+			<h1 class="text-center text-xl font-bold">Our Pillars</h1>
+			<div class="flex flex-wrap justify-evenly">
+				{home.pillars.map((e) => {
+				return (
+					<div
+					
+					class="max-w-64 pb-5 rounded-lg shadow-lg bg-white overflow-clip"
+					>
+					<Image
+						inferSize
+						alt=""
+						src={import.meta.env.STRAPI_BASE_URL + e.icon.data.attributes.url}
+						class:list="bg-cover"
+					/>
+					<h2 class="font-bold text-lg py-3 px-2">{e.title}</h2>
+					<p class="text-justify px-2">{e.description}</p>
+					</div>
+				);
+				})}
+			</div>
+		</section>
+	
+		<hr class="my-5" />
+	
+		<section class="flex flex-col gap-6 p-5">
+			<h1 class="text-center text-xl font-bold">
+				{home.partnerConfig.title}
+			</h1>
+			<div class="flex flex-wrap gap-x-1 gap-y-2 justify-evenly">
+			{partners?.data.map((e) => (
+				<div
+				class="max-w-60 rounded-lg shadow-lg bg-white overflow-clip"
+				>
+				<Image
+					inferSize
+					alt=""
+					src={import.meta.env.STRAPI_BASE_URL + e.attributes.logo.data.attributes.url}
+					class="bg-cover"
+				/>
+				<Button
+					params={
+					{
+						id: e.id,
+						classList: home.partnerConfig.buttonClassList,
+						href: e.attributes.site,
+						label: e.attributes.name,
+					} as ButtonType
+					}
+					className="w-full rounded-none text-sm"
+				/>
+				</div>
+			))}
+			</div>
+		</section>
+	
+		<hr class="my-5" />
+	
+		<section class="flex flex-col gap-3 p-5">
+			<ArticleTabs
+				baseUrl={import.meta.env.STRAPI_BASE_URL}
+				config={home.articleConfig}
+				news={news}
+				press={press}
+				annual={annual}
+				client:load/>
+		</section>
+	
+		<hr class="my-5" />
+		<section class="flex flex-col items-center gap-6 p-5">
+			<h1 class="text-xl font-bold">{home.contactUs.title}</h1>
+			<p class="w-3/5 text-center">{home.contactUs.description}</p>
+			<Button params={home.contactUs.button} className="w-1/5" />
+		</section>
 
-<html lang={i18next.language}>
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{t("home.title")}</title>
-		<HeadHrefLangs/>
-	</head>
-	<body>
-		<h1 class="text-lg font-bold">{t('home.title')}</h1>
-		<ul class="flex gap-2 text-blue-400 underline">
-			<li><a href="/">EN</a></li>
-			<li><a href="/id">ID</a></li>
-		</ul>
-		<Journals url={import.meta.env.STRAPI_API} client:load/>
-	</body>
-</html>
+		<hr class="my-5" />
+	</main>
+</BaseLayout>

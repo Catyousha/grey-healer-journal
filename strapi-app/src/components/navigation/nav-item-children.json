@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_navigation_nav_item_children_s",
+  "info": {
+    "displayName": "Nav Item (Children)",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string"
+    },
+    "classList": {
+      "type": "string"
+    },
+    "href": {
+      "type": "string"
+    }
+  }
+}

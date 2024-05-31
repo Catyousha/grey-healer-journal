@@ -1,0 +1,44 @@
+---
+import { Image } from "astro:assets";
+import type { FooterType } from "../../types/footer";
+
+const props = Astro.props;
+const footer: FooterType = props.footer;
+---
+
+<footer class="bg-slate-200 py-4">
+    <section class="flex items-center px-8 justify-between">
+        <Image
+            src={import.meta.env.STRAPI_BASE_URL + footer.data.attributes.logo.data.attributes.url}
+            inferSize
+            alt="footer-logo"
+            class='w-32 h-32'
+        />
+        <ul class="flex gap-8">
+            {footer.data.attributes.navItems.map((e) => (
+                <li class="flex flex-col gap-4">
+                    <a href={e.href ?? "#"} class="font-bold underline underline-offset-2 hover:text-red-500">{e.label}</a>
+                    <ul class="flex flex-col gap-1">
+                        {e.children?.map((c) => (<a class="hover:text-red-500" href={c.href ?? '#'}>{c.label}</a>))}
+                    </ul>
+                </li>
+            ))}
+        </ul>
+        <div class="flex">
+            {footer.data.attributes.socialMedias.map((e) => (
+                <a class="flex items-center gap-2" href={e.href}>
+                    <Image
+                    alt=''
+                    src={import.meta.env.STRAPI_BASE_URL +e.icon.data.attributes.url}
+                    class="w-8 h-8"
+                    inferSize/>
+                </a>
+            ))}
+        </div>
+    </section>
+    <section class="text-center text-sm pt-5">
+        <p>{footer.data.attributes.copyright}</p>
+    </section>
+</footer>
+
+

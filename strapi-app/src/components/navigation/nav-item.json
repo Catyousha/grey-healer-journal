@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_navigation_nav_items",
+  "info": {
+    "displayName": "Nav Item",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string"
+    },
+    "classList": {
+      "type": "string"
+    },
+    "href": {
+      "type": "string"
+    },
+    "children": {
+      "displayName": "Nav Item (Children)",
+      "type": "component",
+      "repeatable": true,
+      "component": "navigation.nav-item-children"
+    }
+  }
+}

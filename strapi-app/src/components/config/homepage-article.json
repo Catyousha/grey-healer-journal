@@ -1,0 +1,34 @@
+{
+  "collectionName": "components_config_homepage_articles",
+  "info": {
+    "displayName": "Homepage Article",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "newsAmount": {
+      "type": "integer"
+    },
+    "pressReleaseAmount": {
+      "type": "integer"
+    },
+    "annualReportAmount": {
+      "type": "integer"
+    },
+    "newsButton": {
+      "type": "component",
+      "repeatable": false,
+      "component": "common.button"
+    },
+    "pressReleaseButton": {
+      "type": "component",
+      "repeatable": false,
+      "component": "common.button"
+    },
+    "annualReportButton": {
+      "type": "component",
+      "repeatable": false,
+      "component": "common.button"
+    }
+  }
+}

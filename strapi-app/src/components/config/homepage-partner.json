@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_config_homepage_partners",
+  "info": {
+    "displayName": "Homepage Partner",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "amount": {
+      "type": "integer"
+    },
+    "title": {
+      "type": "string"
+    },
+    "buttonClassList": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,41 @@
+---
+import Footer from "../components/section/footer.astro";
+import Header from "../components/section/header";
+import type { FooterType } from "../types/footer";
+import type { HeaderType } from "../types/header";
+
+const {title} = Astro.props;
+
+const header = await fetch(
+        `${import.meta.env.STRAPI_API}/header?populate[navItems][populate]=*\
+		&populate[logo][populate]=*`
+    ).then(async (e) => await e.json() as HeaderType);
+const footer = await fetch(
+        `${import.meta.env.STRAPI_API}/footer?populate[navItems][populate]=*\
+		&populate[logo][populate]=*\
+		&populate[socialMedias][populate]=*`
+    ).then(async (e) => {
+		
+		const a = await e.json() as FooterType
+		console.log(JSON.stringify(a));
+		return a;
+	});
+---
+
+
+<html lang='en'>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+	</head>
+	<body class="overflow-y-hidden">
+		<Header header={header} baseUrl={import.meta.env.STRAPI_BASE_URL} client:visible/>
+		<div class="max-h-[93vh] overflow-y-scroll">
+			<slot name="main"/>
+			<Footer footer={footer}/>
+		</div>
+	</body>
+</html>
